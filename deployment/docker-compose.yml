@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  database:
+    image: 'mongo:latest'
+    container_name: 'weGoNice-db'
+    environment:
+      - MONGO_INITDB_DATABASE=weGoNice
+      - MONGO_INITDB_USERNAME=NiceUser
+      - MONGO_INITDB_PASSWORD=nicePassword
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ../../weGoNice/volumes/production/data:/data/db
+    ports:
+      - '27017-27019:27017-27019'
