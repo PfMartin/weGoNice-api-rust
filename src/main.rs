@@ -1,11 +1,17 @@
-use rocket::{get, http::Status, launch, routes, serde::json::Json};
+mod api;
+mod models;
+mod repository;
 
-#[get("/")]
-fn setup() -> Result<Json<String>, Status> {
-    Ok(Json(String::from("Setup is done")))
-}
+use api::user_api::get_all_users;
+
+use repository::mongo_repo::MongoRepo;
+use rocket::{launch, routes};
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![setup])
+    let db = MongoRepo::init();
+
+    rocket::build()
+        .manage(db)
+        .mount("/", routes![get_all_users])
 }
