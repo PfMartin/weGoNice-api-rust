@@ -5,12 +5,12 @@ mod utils;
 
 use api::user_api::get_all_users;
 
-use database::users_client::UsersClient;
+use database::database::DB;
 use rocket::{launch, routes};
 
 #[launch]
 async fn rocket() -> _ {
-    let db = match UsersClient::new().await {
+    let db = match DB::new().await {
         Ok(d) => d,
         Err(err) => panic!("Couldn't connect to User db: {}", err),
     };
